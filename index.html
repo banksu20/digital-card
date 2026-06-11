@@ -104,24 +104,9 @@
             <input type="tel" id="salesPhone" placeholder="เช่น 0812345678" required>
         </div>
 
-        <div class="form-group">
-            <label for="salesLine">ลิงก์ LINE หรือ LINE ID (ทางเลือก)</label>
-            <input type="text" id="salesLine" placeholder="เช่น https://line.me/ti/p/~id หรือ id">
-        </div>
-
-        <div class="form-group">
-            <label for="salesWebsite">ลิงก์เว็บไซต์ (ทางเลือก)</label>
-            <input type="text" id="salesWebsite" placeholder="เช่น www.yourcompany.com">
-        </div>
-
         <button class="btn-send" onclick="sendCard()">✉️ ส่งนามบัตรให้ลูกค้า</button>
         <div id="loading">กำลังเตรียมหน้าต่างส่งข้อความ...</div>
 
-        <div class="link-generator">
-            <p>คุณสามารถตั้งค่าเริ่มต้นโดยส่งลิงก์แบบนี้:<br>
-                <code id="myLink" style="color:#00B900; word-break: break-all;"></code>
-            </p>
-        </div>
     </div>
 
     <script>
@@ -190,55 +175,55 @@
 
             // สร้างกล่องปุ่มแบบไดนามิก ป้องกันโครงสร้างปุ่มว่าง (ห้ามส่ง URI ว่างเด็ดขาด)
             const row1 = [
-                { 
-                    "type": "button", 
-                    "style": "primary", 
-                    "height": "sm", 
-                    "color": "#5c5c5c", 
-                    "action": { 
-                        "type": "uri", 
-                        "label": "📞 CALL", 
-                        "uri": "tel:" + phoneInput.replace(/-/g, '') 
-                    } 
+                {
+                    "type": "button",
+                    "style": "primary",
+                    "height": "sm",
+                    "color": "#5c5c5c",
+                    "action": {
+                        "type": "uri",
+                        "label": "📞 CALL",
+                        "uri": "tel:" + phoneInput.replace(/-/g, '')
+                    }
                 },
-                { 
-                    "type": "button", 
-                    "style": "primary", 
-                    "height": "sm", 
-                    "color": "#1877f2", 
-                    "action": { 
-                        "type": "uri", 
-                        "label": "🔗 Share Card", 
-                        "uri": "https://liff.line.me/2010369802-Hb738Rcl" 
-                    } 
+                {
+                    "type": "button",
+                    "style": "primary",
+                    "height": "sm",
+                    "color": "#1877f2",
+                    "action": {
+                        "type": "uri",
+                        "label": "🔗 Share Card",
+                        "uri": "https://liff.line.me/2010369802-Hb738Rcl"
+                    }
                 }
             ];
 
             const row2 = [];
             if (lineUri) {
-                row2.push({ 
-                    "type": "button", 
-                    "style": "primary", 
-                    "height": "sm", 
-                    "color": "#06c755", 
-                    "action": { 
-                        "type": "uri", 
-                        "label": "💬 LINE", 
-                        "uri": lineUri 
-                    } 
+                row2.push({
+                    "type": "button",
+                    "style": "primary",
+                    "height": "sm",
+                    "color": "#06c755",
+                    "action": {
+                        "type": "uri",
+                        "label": "💬 LINE",
+                        "uri": lineUri
+                    }
                 });
             }
             if (webUri) {
-                row2.push({ 
-                    "type": "button", 
-                    "style": "primary", 
-                    "height": "sm", 
-                    "color": "#ea4335", 
-                    "action": { 
-                        "type": "uri", 
-                        "label": "🔴 Website", 
-                        "uri": webUri 
-                    } 
+                row2.push({
+                    "type": "button",
+                    "style": "primary",
+                    "height": "sm",
+                    "color": "#ea4335",
+                    "action": {
+                        "type": "uri",
+                        "label": "🔴 Website",
+                        "uri": webUri
+                    }
                 });
             }
 
