@@ -104,6 +104,16 @@
             <input type="tel" id="salesPhone" placeholder="เช่น 0812345678" required>
         </div>
 
+        <div class="form-group">
+            <label for="salesLine">ลิงก์ LINE หรือ LINE ID (ทางเลือก)</label>
+            <input type="text" id="salesLine" placeholder="เช่น https://line.me/ti/p/~id หรือ id">
+        </div>
+
+        <div class="form-group">
+            <label for="salesWebsite">ลิงก์เว็บไซต์ (ทางเลือก)</label>
+            <input type="text" id="salesWebsite" placeholder="เช่น www.yourcompany.com">
+        </div>
+
         <button class="btn-send" onclick="sendCard()">✉️ ส่งนามบัตรให้ลูกค้า</button>
         <div id="loading">กำลังเตรียมหน้าต่างส่งข้อความ...</div>
 
@@ -119,10 +129,14 @@
         const urlParams = new URLSearchParams(window.location.search);
         const nameParam = urlParams.get('name') || '';
         const phoneParam = urlParams.get('phone') || '';
+        const lineParam = urlParams.get('line') || '';
+        const webParam = urlParams.get('web') || '';
 
         // นำค่าจาก URL มาใส่ในช่องกรอก
         if (nameParam) document.getElementById('salesName').value = nameParam;
         if (phoneParam) document.getElementById('salesPhone').value = phoneParam;
+        if (lineParam) document.getElementById('salesLine').value = lineParam;
+        if (webParam) document.getElementById('salesWebsite').value = webParam;
 
         async function initLIFF() {
             try {
@@ -134,7 +148,7 @@
 
                 // แสดงลิงก์ตัวอย่างของตัวเอง
                 const currentUrl = liff.isLoggedIn() ? "https://liff.line.me/2010369802-Hb738Rcl" : window.location.href.split('?')[0];
-                document.getElementById('myLink').innerText = currentUrl + "?name=ชื่อคุณ&phone=เบอร์คุณ";
+                document.getElementById('myLink').innerText = currentUrl + "?name=ชื่อคุณ&phone=เบอร์คุณ&line=ไลน์ไอดี&web=ลิงก์เว็บ";
             } catch (err) {
                 console.error("LIFF Init Error:", err);
             }
@@ -143,6 +157,8 @@
         async function sendCard() {
             const nameInput = document.getElementById('salesName').value;
             const phoneInput = document.getElementById('salesPhone').value;
+            const lineInput = document.getElementById('salesLine').value;
+            const webInput = document.getElementById('salesWebsite').value;
 
             if (!nameInput || !phoneInput) {
                 alert("กรุณากรอกชื่อและเบอร์โทรก่อนส่งครับ");
@@ -152,7 +168,100 @@
             // แสดงสถานะโหลด
             document.getElementById('loading').style.display = "block";
 
-            // สร้าง Flex Message นามบัตรแบบสวยงาม (ตามต้นฉบับ)
+            // จัดการข้อมูลเว็บไซต์
+            let displayWeb = "www.yourcompany.com";
+            let webUri = "";
+            if (webInput.trim()) {
+                displayWeb = webInput.trim().replace(/^(https?:\/\/)?(www\.)?/, '');
+                webUri = webInput.trim();
+                if (!webUri.startsWith('http://') && !webUri.startsWith('https://')) {
+                    webUri = 'https://' + webUri;
+                }
+            }
+
+            // จัดการข้อมูล LINE
+            let lineUri = "";
+            if (lineInput.trim()) {
+                lineUri = lineInput.trim();
+                if (!lineUri.startsWith('http://') && !lineUri.startsWith('https://') && !lineUri.startsWith('line://')) {
+                    lineUri = 'https://line.me/ti/p/~' + lineUri;
+                }
+            }
+
+            // สร้างกล่องปุ่มแบบไดนามิก ป้องกันโครงสร้างปุ่มว่าง (ห้ามส่ง URI ว่างเด็ดขาด)
+            const row1 = [
+                { 
+                    "type": "button", 
+                    "style": "primary", 
+                    "height": "sm", 
+                    "color": "#5c5c5c", 
+                    "action": { 
+                        "type": "uri", 
+                        "label": "📞 CALL", 
+                        "uri": "tel:" + phoneInput.replace(/-/g, '') 
+                    } 
+                },
+                { 
+                    "type": "button", 
+                    "style": "primary", 
+                    "height": "sm", 
+                    "color": "#1877f2", 
+                    "action": { 
+                        "type": "uri", 
+                        "label": "🔗 Share Card", 
+                        "uri": "https://liff.line.me/2010369802-Hb738Rcl" 
+                    } 
+                }
+            ];
+
+            const row2 = [];
+            if (lineUri) {
+                row2.push({ 
+                    "type": "button", 
+                    "style": "primary", 
+                    "height": "sm", 
+                    "color": "#06c755", 
+                    "action": { 
+                        "type": "uri", 
+                        "label": "💬 LINE", 
+                        "uri": lineUri 
+                    } 
+                });
+            }
+            if (webUri) {
+                row2.push({ 
+                    "type": "button", 
+                    "style": "primary", 
+                    "height": "sm", 
+                    "color": "#ea4335", 
+                    "action": { 
+                        "type": "uri", 
+                        "label": "🔴 Website", 
+                        "uri": webUri 
+                    } 
+                });
+            }
+
+            const buttonBoxContents = [
+                {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "spacing": "sm",
+                    "contents": row1
+                }
+            ];
+
+            if (row2.length > 0) {
+                buttonBoxContents.push({
+                    "type": "box",
+                    "layout": "horizontal",
+                    "spacing": "sm",
+                    "margin": "sm",
+                    "contents": row2
+                });
+            }
+
+            // สร้าง Flex Message นามบัตรแบบสวยงาม
             const flexMessage = {
                 "type": "flex",
                 "altText": "นามบัตรดิจิทัล: " + nameInput,
@@ -161,7 +270,7 @@
                     "size": "mega",
                     "hero": {
                         "type": "image",
-                        "url": new URL("./image/tbs-logo-line.png", window.location.href).href, // แปลง "./image/tbs-logo-line.png" ให้เป็น URL แบบสัมบูรณ์ (Absolute URL)
+                        "url": new URL("./image/tbs-logo-line.png", window.location.href).href, // แปลงเป็น Absolute URL เสมอ
                         "size": "full",
                         "aspectRatio": "20:13",
                         "aspectMode": "cover"
@@ -204,7 +313,7 @@
                                         "layout": "horizontal",
                                         "contents": [
                                             { "type": "text", "text": "Website", "color": "#aaaaaa", "size": "sm", "flex": 2 },
-                                            { "type": "text", "text": "www.yourcompany.com", "wrap": true, "color": "#333333", "size": "sm", "flex": 5, "align": "end" }
+                                            { "type": "text", "text": displayWeb, "wrap": true, "color": "#333333", "size": "sm", "flex": 5, "align": "end" }
                                         ]
                                     },
                                     {
@@ -275,26 +384,7 @@
                                 "layout": "vertical",
                                 "spacing": "sm",
                                 "margin": "md",
-                                "contents": [
-                                    {
-                                        "type": "box",
-                                        "layout": "horizontal",
-                                        "spacing": "sm",
-                                        "contents": [
-                                            { "type": "button", "style": "primary", "height": "sm", "color": "#5c5c5c", "action": { "type": "uri", "label": "📞 CALL", "uri": "tel:" + phoneInput.replace(/-/g, '') } },
-                                            { "type": "button", "style": "primary", "height": "sm", "color": "#1877f2", "action": { "type": "uri", "label": "🔗 คิดม่ายออก", "uri": "https://liff.line.me/2010369802-Hb738Rcl" } }
-                                        ]
-                                    },
-                                    {
-                                        "type": "box",
-                                        "layout": "horizontal",
-                                        "spacing": "sm",
-                                        "contents": [
-                                            { "type": "button", "style": "primary", "height": "sm", "color": "#06c755", "action": { "type": "uri", "label": "💬 LINE", "uri": "" } },
-                                            { "type": "button", "style": "primary", "height": "sm", "color": "#ea4335", "action": { "type": "uri", "label": "🔴 คิดม่ายออก", "uri": "" } }
-                                        ]
-                                    }
-                                ]
+                                "contents": buttonBoxContents
                             },
                             {
                                 "type": "box",
@@ -302,7 +392,7 @@
                                 "margin": "lg",
                                 "spacing": "xs",
                                 "contents": [
-                                    { "type": "text", "text": "TBS Marketing", "size": "xxs", "color": "#aaaaaa", "align": "center" },
+                                    { "type": "text", "text": "TBS Marketing", "size": "xxs", "color": "#aaaaaa", "align": "center" }
                                 ]
                             }
                         ]
