@@ -117,11 +117,17 @@
         const lineParam = urlParams.get('line') || '';
         const webParam = urlParams.get('web') || '';
 
-        // นำค่าจาก URL มาใส่ในช่องกรอก
-        if (nameParam) document.getElementById('salesName').value = nameParam;
-        if (phoneParam) document.getElementById('salesPhone').value = phoneParam;
-        if (lineParam) document.getElementById('salesLine').value = lineParam;
-        if (webParam) document.getElementById('salesWebsite').value = webParam;
+        // ดึง DOM Elements แบบปลอดภัย (กันสคริปต์พังถ้าลบโค้ดส่วน HTML ออก)
+        const salesNameEl = document.getElementById('salesName');
+        const salesPhoneEl = document.getElementById('salesPhone');
+        const salesLineEl = document.getElementById('salesLine');
+        const salesWebsiteEl = document.getElementById('salesWebsite');
+
+        // นำค่าจาก URL มาใส่ในช่องกรอก (ถ้ามีช่องกรอกนั้นๆ อยู่บนหน้าจอ)
+        if (salesNameEl && nameParam) salesNameEl.value = nameParam;
+        if (salesPhoneEl && phoneParam) salesPhoneEl.value = phoneParam;
+        if (salesLineEl && lineParam) salesLineEl.value = lineParam;
+        if (salesWebsiteEl && webParam) salesWebsiteEl.value = webParam;
 
         async function initLIFF() {
             try {
@@ -131,19 +137,23 @@
                     liff.login();
                 }
 
-                // แสดงลิงก์ตัวอย่างของตัวเอง
-                const currentUrl = liff.isLoggedIn() ? "https://liff.line.me/2010369802-Hb738Rcl" : window.location.href.split('?')[0];
-                document.getElementById('myLink').innerText = currentUrl + "?name=ชื่อคุณ&phone=เบอร์คุณ&line=ไลน์ไอดี&web=ลิงก์เว็บ";
+                // แสดงลิงก์ตัวอย่างของตัวเอง (ถ้ามีจุดแสดงข้อความ)
+                const myLinkEl = document.getElementById('myLink');
+                if (myLinkEl) {
+                    const currentUrl = liff.isLoggedIn() ? "https://liff.line.me/2010369802-Hb738Rcl" : window.location.href.split('?')[0];
+                    myLinkEl.innerText = currentUrl + "?name=ชื่อคุณ&phone=เบอร์คุณ&line=ไลน์ไอดี&web=ลิงก์เว็บ";
+                }
             } catch (err) {
                 console.error("LIFF Init Error:", err);
             }
         }
 
         async function sendCard() {
-            const nameInput = document.getElementById('salesName').value;
-            const phoneInput = document.getElementById('salesPhone').value;
-            const lineInput = document.getElementById('salesLine').value;
-            const webInput = document.getElementById('salesWebsite').value;
+            // ดึงค่าจากหน้าจอ หรือถ้าไม่มีช่องกรอก ให้ใช้ค่าจาก URL Parameter เป็นตัวสำรอง
+            const nameInput = salesNameEl ? salesNameEl.value : nameParam;
+            const phoneInput = salesPhoneEl ? salesPhoneEl.value : phoneParam;
+            const lineInput = salesLineEl ? salesLineEl.value : lineParam;
+            const webInput = salesWebsiteEl ? salesWebsiteEl.value : webParam;
 
             if (!nameInput || !phoneInput) {
                 alert("กรุณากรอกชื่อและเบอร์โทรก่อนส่งครับ");
