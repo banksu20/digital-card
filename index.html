@@ -237,6 +237,64 @@
                 });
             }
 
+            // --- เตรียมโครงสร้างแถวที่ 3 (แก้ไขชื่อปุ่ม ลิงก์ และสีได้ที่นี่) ---
+            const row3_1_label = "ปุ่มสำรอง 3-1";
+            const row3_1_uri = ""; // ใส่ URL (เช่น https://...) หรือปล่อยเป็น "" หากยังไม่เปิดใช้งานปุ่มนี้
+            const row3_1_color = "#5c5c5c"; 
+
+            const row3_2_label = "ปุ่มสำรอง 3-2";
+            const row3_2_uri = ""; // ใส่ URL (เช่น https://...) หรือปล่อยเป็น "" หากยังไม่เปิดใช้งานปุ่มนี้
+            const row3_2_color = "#5c5c5c";
+
+            const row3 = [];
+            if (row3_1_uri.trim()) {
+                row3.push({
+                    "type": "button",
+                    "style": "primary",
+                    "height": "sm",
+                    "color": row3_1_color,
+                    "action": { "type": "uri", "label": row3_1_label, "uri": row3_1_uri.trim() }
+                });
+            }
+            if (row3_2_uri.trim()) {
+                row3.push({
+                    "type": "button",
+                    "style": "primary",
+                    "height": "sm",
+                    "color": row3_2_color,
+                    "action": { "type": "uri", "label": row3_2_label, "uri": row3_2_uri.trim() }
+                });
+            }
+
+            // --- เตรียมโครงสร้างแถวที่ 4 (แก้ไขชื่อปุ่ม ลิงก์ และสีได้ที่นี่) ---
+            const row4_1_label = "ปุ่มสำรอง 4-1";
+            const row4_1_uri = ""; // ใส่ URL (เช่น https://...) หรือปล่อยเป็น "" หากยังไม่เปิดใช้งานปุ่มนี้
+            const row4_1_color = "#5c5c5c";
+
+            const row4_2_label = "ปุ่มสำรอง 4-2";
+            const row4_2_uri = ""; // ใส่ URL (เช่น https://...) หรือปล่อยเป็น "" หากยังไม่เปิดใช้งานปุ่มนี้
+            const row4_2_color = "#5c5c5c";
+
+            const row4 = [];
+            if (row4_1_uri.trim()) {
+                row4.push({
+                    "type": "button",
+                    "style": "primary",
+                    "height": "sm",
+                    "color": row4_1_color,
+                    "action": { "type": "uri", "label": row4_1_label, "uri": row4_1_uri.trim() }
+                });
+            }
+            if (row4_2_uri.trim()) {
+                row4.push({
+                    "type": "button",
+                    "style": "primary",
+                    "height": "sm",
+                    "color": row4_2_color,
+                    "action": { "type": "uri", "label": row4_2_label, "uri": row4_2_uri.trim() }
+                });
+            }
+
             const buttonBoxContents = [
                 {
                     "type": "box",
@@ -253,6 +311,26 @@
                     "spacing": "sm",
                     "margin": "sm",
                     "contents": row2
+                });
+            }
+
+            if (row3.length > 0) {
+                buttonBoxContents.push({
+                    "type": "box",
+                    "layout": "horizontal",
+                    "spacing": "sm",
+                    "margin": "sm",
+                    "contents": row3
+                });
+            }
+
+            if (row4.length > 0) {
+                buttonBoxContents.push({
+                    "type": "box",
+                    "layout": "horizontal",
+                    "spacing": "sm",
+                    "margin": "sm",
+                    "contents": row4
                 });
             }
 
