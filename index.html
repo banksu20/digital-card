@@ -160,11 +160,9 @@
                 return;
             }
 
-            // แสดงสถานะโหลด
             document.getElementById('loading').style.display = "block";
 
-            // จัดการข้อมูลเว็บไซต์
-            let displayWeb = "www.yourcompany.com";
+            let displayWeb = "www.tbs-marketing.com/th";
             let webUri = "";
             if (webInput.trim()) {
                 displayWeb = webInput.trim().replace(/^(https?:\/\/)?(www\.)?/, '');
@@ -174,7 +172,6 @@
                 }
             }
 
-            // จัดการข้อมูล LINE
             let lineUri = "";
             if (lineInput.trim()) {
                 lineUri = lineInput.trim();
@@ -183,7 +180,6 @@
                 }
             }
 
-            // สร้างกล่องปุ่มแบบไดนามิก ป้องกันโครงสร้างปุ่มว่าง (ห้ามส่ง URI ว่างเด็ดขาด)
             const row1 = [
                 {
                     "type": "button",
@@ -334,7 +330,6 @@
                 });
             }
 
-            // สร้าง Flex Message นามบัตรแบบสวยงาม
             const flexMessage = {
                 "type": "flex",
                 "altText": "นามบัตรดิจิทัล: " + nameInput,
@@ -428,7 +423,7 @@
                                         "spacing": "md",
                                         "contents": [
                                             { "type": "image", "url": "https://img.freepik.com/free-vector/app-development-concept-with-programming-languages_23-2148688949.jpg", "size": "30px", "aspectMode": "cover", "aspectRatio": "1:1", "flex": 0 },
-                                            { "type": "text", "text": "Service 1: รับพัฒนาแอปพลิเคชันและเว็บไซต์", "size": "xs", "wrap": true, "color": "#555555", "gravity": "center" }
+                                            { "type": "text", "text": "Service 1: รอเพิ่มข้อมูล", "size": "xs", "wrap": true, "color": "#555555", "gravity": "center" }
                                         ]
                                     },
                                     {
@@ -437,7 +432,7 @@
                                         "spacing": "md",
                                         "contents": [
                                             { "type": "image", "url": "https://img.freepik.com/free-vector/digital-marketing-concept-with-icons_23-2147822363.jpg", "size": "30px", "aspectMode": "cover", "aspectRatio": "1:1", "flex": 0 },
-                                            { "type": "text", "text": "Service 2: บริการทำการตลาดออนไลน์แบบครบวงจร", "size": "xs", "wrap": true, "color": "#555555", "gravity": "center" }
+                                            { "type": "text", "text": "Service 2: รอเพิ่มข้อมูล", "size": "xs", "wrap": true, "color": "#555555", "gravity": "center" }
                                         ]
                                     },
                                     {
@@ -446,7 +441,7 @@
                                         "spacing": "md",
                                         "contents": [
                                             { "type": "image", "url": "https://img.freepik.com/free-vector/business-team-discussing-ideas-startup_74855-4380.jpg", "size": "30px", "aspectMode": "cover", "aspectRatio": "1:1", "flex": 0 },
-                                            { "type": "text", "text": "Service 3: ให้คำปรึกษาและวางแผนกลยุทธ์ธุรกิจ", "size": "xs", "wrap": true, "color": "#555555", "gravity": "center" }
+                                            { "type": "text", "text": "Service 3: รอเพิ่มข้อมูล", "size": "xs", "wrap": true, "color": "#555555", "gravity": "center" }
                                         ]
                                     }
                                 ]
